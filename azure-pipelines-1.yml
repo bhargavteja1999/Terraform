@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: TerraformTaskV4@4
+  displayName: 'terraform init'
+  inputs:
+    provider: 'aws'
+    command: 'init'
+    backendServiceAWS: 'aws-terraform23'
+    backendAWSBucketName: 'terraform20246767'
+    backendAWSKey: 'tf/terraform.tfstate'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform plan'
+  inputs:
+    provider: 'aws'
+    command: 'plan'
+    environmentServiceNameAWS: 'aws-terraform23'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform destory'
+  inputs:
+    provider: 'aws'
+    command: 'destroy'
+    environmentServiceNameAWS: 'aws-terraform23'
